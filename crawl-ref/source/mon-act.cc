@@ -1403,11 +1403,15 @@ static void _pre_monster_move(monster& mons)
         }
     }
 
-    // Dissipate player ball lightnings that have left the player's sight
+    // Dissipate player ball lightnings and foxfires
+    // that have left the player's sight
     // (monsters are allowed to 'cheat', as with orb of destruction)
-    if (mons.type == MONS_BALL_LIGHTNING && mons.summoner == MID_PLAYER
+    if ((mons.type == MONS_BALL_LIGHTNING || mons.type == MONS_FOXFIRE)
+        && mons.summoner == MID_PLAYER
         && !cell_see_cell(you.pos(), mons.pos(), LOS_SOLID))
     {
+        if (mons.type == MONS_FOXFIRE)
+            check_place_cloud(CLOUD_FLAME, mons.pos(), 2, &mons);
         monster_die(mons, KILL_RESET, NON_MONSTER);
         return;
     }
@@ -1610,6 +1614,16 @@ void handle_monster_move(monster* mons)
             mons->speed_increment -= BASELINE_DELAY;
         }
         return;
+    }
+
+    if (mons->type == MONS_FOXFIRE)
+    {
+        if (mons->steps_remaining == 0)
+        {
+            check_place_cloud(CLOUD_FLAME, mons->pos(), 2, mons);
+            mons->suicide();
+            return;
+        }
     }
 
     mons->shield_blocks = 0;
@@ -3265,6 +3279,9 @@ static bool _do_move_monster(monster& mons, const coord_def& delta)
     // This appears to be the real one, ie where the movement occurs:
     _swim_or_move_energy(mons);
 
+    if (mons.type == MONS_FOXFIRE)
+        --mons.steps_remaining;
+
     _escape_water_hold(mons);
 
     if (grd(mons.pos()) == DNGN_DEEP_WATER && grd(f) != DNGN_DEEP_WATER
@@ -3581,6 +3598,9 @@ static bool _monster_move(monster* mons)
         {
             place_cloud(CLOUD_FIRE, mons->pos(), 2 + random2(4), mons);
         }
+
+        if (mons->type == MONS_FOXFIRE)
+            check_place_cloud(CLOUD_FLAME, mons->pos(), 2, mons);
 
         if (mons->type == MONS_CURSE_TOE)
             place_cloud(CLOUD_MIASMA, mons->pos(), 2 + random2(3), mons);
