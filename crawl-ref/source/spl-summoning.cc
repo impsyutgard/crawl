@@ -2414,11 +2414,15 @@ static void _init_servitor_monster(monster &mon, const actor& caster)
         {
             mon.spells.emplace_back(spell, 0, MON_SPELL_WIZARD);
             spell_levels += spell_difficulty(spell);
+
+            // Player servitors take a single spell
+            if (!caster_mon)
+                break;
         }
     }
 
     // Fix up frequencies now that we know the total number of spell levels.
-    const int base_freq = caster_mon ? 67 : 200;
+    const int base_freq = caster_mon ? 67 : 150;
     for (auto& slot : mon.spells)
     {
         slot.freq = max(1, div_rand_round(spell_difficulty(slot.spell)
