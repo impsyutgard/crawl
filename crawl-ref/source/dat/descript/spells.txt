@@ -340,7 +340,7 @@ affected creature appreciably easier to hit.
 Corpse Rot spell
 
 Rapidly accelerates the decomposition of any corpses lying around the caster,
-emitting in the process a foul miasmic vapour, which eats away at the life
+and gathers the foul miasmic vapour around the caster. The eats away at the life
 force of any creature it envelops.
 %%%%
 Corrosive Bolt spell
