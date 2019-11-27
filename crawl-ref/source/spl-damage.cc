@@ -3184,7 +3184,7 @@ spret cast_hailstorm(int pow, bool fail, bool tracer)
     return spret::success;
 }
 
-void _imb_actor(actor * act, int pow)
+static void _imb_actor(actor * act, int pow)
 {
     bolt beam;
     beam.source          = you.pos();
