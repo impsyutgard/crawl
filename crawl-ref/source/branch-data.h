@@ -12,7 +12,7 @@ const Branch branches[NUM_BRANCHES] =
     //  floor colour, rock colour
     //  travel shortcut, runes, ambient noise level
 
-    { BRANCH_DUNGEON, NUM_BRANCHES, 0, 0, 15, 0,
+    { BRANCH_DUNGEON, NUM_BRANCHES, 0, 0, 30, 0,
       brflag::none,
       NUM_FEATURES, DNGN_EXIT_DUNGEON, NUM_FEATURES,
       "Dungeon", "the Dungeon", "D",
